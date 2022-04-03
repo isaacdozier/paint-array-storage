@@ -37,8 +37,6 @@ function init(){
 
 //Draw and display functionality
 var click = false
-var thisX = 0, thisY = 0
-var lastX = 0, lastY = 0
 
 function displayArray(){
     context.clearRect(0, 0, canvas.width, canvas.height);
