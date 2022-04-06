@@ -9,6 +9,9 @@ canvas.id = "canvas"
 //Nest canvas element -> body/content
 content.appendChild(canvas)
 
+//Set styling
+document.getElementById('canvas').style.border = '1px solid black'
+
 //Set canvas width and height
 const width   = 1000
 const height  = 1000
@@ -49,39 +52,29 @@ function displayArray(){
 }
 
 function paintIt(){
-  if(click && inFrameCheck(event.clientX,event.clientY)){
-    pixels[coorX(event).toFixed(0)][coorY(event).toFixed(0)].color = 1
+  if(click && inFrameCheckX() && inFrameCheckY()){ 
+    pixels[coorX(event)][coorY(event)].color = 1
     window.requestAnimationFrame(displayArray)
   }
 }
 
 //mouse events
-document.body.onmousedown = function(){
-  click = true
-  paintIt()
-}
+document.body.onmousedown = function(){click = true, paintIt()}
+document.body.onmouseup   = function(){click = false}
+document.body.onmousemove = function(){paintIt()}
 
-document.body.onmouseup   = function(){
-  click = false
-}
+//Helper variables
+var offsetLeft   = document.getElementById('canvas').offsetLeft
+var offsetTop    = document.getElementById('canvas').offsetTop
 
-document.body.onmousemove = function(){
-  paintIt()
-}
+//Helper Functions
+var inFrameCheckX = function(){return coorX(event) < width}
+var inFrameCheckY = function(){return coorY(event) < height}
 
-//Helper Functions`
-function inFrameCheck(x,y){return x <= width && y <= height}
+var coorX = function(e){ return e.clientX - offsetLeft + window.pageXOffset}
+var coorY = function(e){ return e.clientY - offsetTop  + window.pageYOffset}
 
-function coorX(e){
-    offsetX = document.getElementById('canvas').offsetLeft
-    return e.clientX - offsetX
-}
-function coorY(e){
-    offsetY = document.getElementById('canvas').offsetTop
-            - window.pageYOffset
-    return e.clientY - offsetY
-}
-
+//build functions
 function buildArray(){
   //build row array
   for(var h = 0; h < height; h++){
